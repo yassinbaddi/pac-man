@@ -1,0 +1,369 @@
+[
+    {
+        "label": "runpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "runpy",
+        "description": "runpy",
+        "detail": "runpy",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "site",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "site",
+        "description": "site",
+        "detail": "site",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "pygame",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pygame",
+        "description": "pygame",
+        "detail": "pygame",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "importPath": "mazegenerator",
+        "description": "mazegenerator",
+        "isExtraImport": true,
+        "detail": "mazegenerator",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "importPath": "mazegenerator",
+        "description": "mazegenerator",
+        "isExtraImport": true,
+        "detail": "mazegenerator",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "deque",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "Iterator",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "any_fun",
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "isExtraImport": true,
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "bin_dir",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "bin_dir = os.path.dirname(abs_file)\nbase = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"pacman\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "base",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "base = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"pacman\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"PATH\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"pacman\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"VIRTUAL_ENV\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"pacman\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"VIRTUAL_ENV_PROMPT\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"VIRTUAL_ENV_PROMPT\"] = \"pacman\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "prev_length",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "prev_length = len(sys.path)\nfor lib in \"../lib/python3.13/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.path[:]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.real_prefix",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.prefix",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "start_game",
+        "kind": 2,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "def start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2\n    while running:",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "screen",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)\n# screen = pygame.display.set_mode((700, 400), pygame.RESIZABLE)\npygame.display.set_caption(\"Pac-Man\")\nclock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "clock",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "clock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "menu_background",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "menu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "ichtioui_background",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "ichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "menu_background",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "menu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "ichtioui_background",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "ichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "maze",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "maze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "cell_size",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "cell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "wall_width",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "wall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "maze_width",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "maze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "maze_height",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "maze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "x_offset",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "x_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "y_offset",
+        "kind": 5,
+        "importPath": "GUI.graphic",
+        "description": "GUI.graphic",
+        "peekOfCode": "y_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2",
+        "detail": "GUI.graphic",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "kind": 6,
+        "importPath": "mazegenerator-2.1.0-py3-none-any.mazegenerator.mazegenerator",
+        "description": "mazegenerator-2.1.0-py3-none-any.mazegenerator.mazegenerator",
+        "peekOfCode": "class MazeGenerator:\n    def __init__(self, size: tuple[int, int] = (15, 15), perfect: bool = False,\n                 entry_cell: tuple[int, int] = (0, 0),\n                 exit_cell: tuple[int, int] = (-1, -1),\n                 seed: int = 0) -> None:\n        self._width = size[0]\n        self._height = size[1]\n        self._perfect = perfect\n        self._seed = seed\n        self._entryx = (entry_cell[0]",
+        "detail": "mazegenerator-2.1.0-py3-none-any.mazegenerator.mazegenerator",
+        "documentation": {}
+    },
+    {
+        "label": {
+            "name": "",
+            "kind": 2,
+            "peekOfCode": "def  main():\n    if len(sys.argv) != 2:\n        raise ValueError(\"any Error\")\n    any_fun()\nif __name__ == \"__main__\":\n    main()"
+        },
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def  main():\n    if len(sys.argv) != 2:\n        raise ValueError(\"any Error\")\n    any_fun()\nif __name__ == \"__main__\":\n    main()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "print_maze",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def print_maze(m):\n    maze = m.maze\n    width = len(maze[0])\n    height = len(maze)\n    print(\"+---\" * width + \"+\")\n    for y in range(height):\n        line = \"\"\n        for x in range(width):\n            cell = maze[y][x]\n            if cell == 15:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "maze",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "maze = MazeGenerator(\n    size=(15, 15),\n    seed=34,\n    perfect=True\n)\nprint_maze(maze)\n# m = MazeGenerator(size=(5, 5), seed=42)\ncell = maze.maze[0][0]\nm = MazeGenerator(size=(5, 5), seed=42)\nfor y, row in enumerate(m.maze):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "cell",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "cell = maze.maze[0][0]\nm = MazeGenerator(size=(5, 5), seed=42)\nfor y, row in enumerate(m.maze):\n    for x, cell in enumerate(row):\n        print((x, y), cell)\n# print(maze.maze)\nprint(\"Entry:\", maze.maze_entry)\nprint(\"Exit:\", maze.maze_exit)\nprint(\"Shortest path:\", maze.shortest_path)\nfor row in maze.maze:",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "m",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "m = MazeGenerator(size=(5, 5), seed=42)\nfor y, row in enumerate(m.maze):\n    for x, cell in enumerate(row):\n        print((x, y), cell)\n# print(maze.maze)\nprint(\"Entry:\", maze.maze_entry)\nprint(\"Exit:\", maze.maze_exit)\nprint(\"Shortest path:\", maze.shortest_path)\nfor row in maze.maze:\n    print(row)",
+        "detail": "test",
+        "documentation": {}
+    }
+]
