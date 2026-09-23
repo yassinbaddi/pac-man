@@ -123,3 +123,46 @@ def start_game():
 
 
 start_game()
+
+# def high_scores():
+#     print("High scores")
+#     screen.fill((0, 0, 0))
+#     pygame.display.flip()
+
+
+# def instructions():
+#     print("Instructions")
+#     screen.fill((0, 0, 0))
+#     pygame.display.flip()
+
+# def any_fun():
+#     running = True
+
+#     while running:
+#         for event in pygame.event.get():
+
+#             if event.type == pygame.QUIT:
+#                 pygame.quit()
+#                 sys.exit()
+
+#             if event.type == pygame.KEYDOWN:
+
+#                 if event.key == pygame.K_1:
+#                     start_game()
+
+#                 if event.key == pygame.K_2:
+#                     high_scores()
+
+#                 if event.key == pygame.K_3:
+#                     instructions()
+
+#                 if event.key == pygame.K_4:
+#                     pygame.quit()
+#                     sys.exit()
+
+#         screen.blit(menu_background, (0, 0))
+#         pygame.display.flip()
+#         clock.tick(60)
+
+
+# any_fun()

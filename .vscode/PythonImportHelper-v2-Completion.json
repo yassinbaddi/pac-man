@@ -187,7 +187,7 @@
         "kind": 2,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "def start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2\n    while running:",
+        "peekOfCode": "def start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2\n    # Track Pac-Man's position on the grid instead of raw pixels",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -196,7 +196,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)\n# screen = pygame.display.set_mode((700, 400), pygame.RESIZABLE)\npygame.display.set_caption(\"Pac-Man\")\nclock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()",
+        "peekOfCode": "screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)\npygame.display.set_caption(\"Pac-Man\")\nclock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -205,7 +205,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "clock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50",
+        "peekOfCode": "clock = pygame.time.Clock()\nmenu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -214,7 +214,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "menu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10",
+        "peekOfCode": "menu_background = pygame.image.load(\"start_image.png\").convert()\nichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10\nTILE_SIZE = 2",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -223,7 +223,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "ichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size",
+        "peekOfCode": "ichtioui_background = pygame.image.load(\"ichtioui.jpeg\").convert()\nmenu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -232,7 +232,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "menu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size",
+        "peekOfCode": "menu_background = pygame.transform.scale(menu_background, (1920, 1080))\nichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -241,7 +241,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "ichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2",
+        "peekOfCode": "ichtioui_background = pygame.transform.scale(ichtioui_background, (1920, 1080))\nmaze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -250,7 +250,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "maze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\n# exit()\ncell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2",
+        "peekOfCode": "maze = MazeGenerator((25, 15))\nmaze.generate()\nprint(maze.maze)\ncell_size = 50\nwall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()\n# Shrink by 50%",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -259,7 +259,7 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "cell_size = 50\nwall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40",
+        "peekOfCode": "cell_size = 50\nwall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()\n# Shrink by 50%\npacman_image = pygame.transform.scale(original_image, (37, 37))\ndef start_game():\n    print(\"Game started!\")",
         "detail": "GUI.graphic",
         "documentation": {}
     },
@@ -268,43 +268,34 @@
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "wall_width = 10\nmaze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed",
+        "peekOfCode": "wall_width = 10\nTILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()\n# Shrink by 50%\npacman_image = pygame.transform.scale(original_image, (37, 37))\ndef start_game():\n    print(\"Game started!\")\n    running = True",
         "detail": "GUI.graphic",
         "documentation": {}
     },
     {
-        "label": "maze_width",
+        "label": "TILE_SIZE",
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "maze_width = len(maze.maze[0]) * cell_size\nmaze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size",
+        "peekOfCode": "TILE_SIZE = 2\n# Make sure this path is correct for your machine\noriginal_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()\n# Shrink by 50%\npacman_image = pygame.transform.scale(original_image, (37, 37))\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40",
         "detail": "GUI.graphic",
         "documentation": {}
     },
     {
-        "label": "maze_height",
+        "label": "original_image",
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "maze_height = len(maze.maze) * cell_size\nx_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size",
+        "peekOfCode": "original_image = pygame.image.load(\n    \"/home/ichtioui/Documents/pac-man/pa.png\").convert_alpha()\n# Shrink by 50%\npacman_image = pygame.transform.scale(original_image, (37, 37))\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size",
         "detail": "GUI.graphic",
         "documentation": {}
     },
     {
-        "label": "x_offset",
+        "label": "pacman_image",
         "kind": 5,
         "importPath": "GUI.graphic",
         "description": "GUI.graphic",
-        "peekOfCode": "x_offset = (screen.get_width() - maze_width) // 2\ny_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2",
-        "detail": "GUI.graphic",
-        "documentation": {}
-    },
-    {
-        "label": "y_offset",
-        "kind": 5,
-        "importPath": "GUI.graphic",
-        "description": "GUI.graphic",
-        "peekOfCode": "y_offset = (screen.get_height() - maze_height) // 2\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2",
+        "peekOfCode": "pacman_image = pygame.transform.scale(original_image, (37, 37))\ndef start_game():\n    print(\"Game started!\")\n    running = True\n    cell_size = 40\n    wall_width = 4  # Adjust thickness as needed\n    maze_width = len(maze.maze[0]) * cell_size\n    maze_height = len(maze.maze) * cell_size\n    x_offset = (screen.get_width() - maze_width) // 2\n    y_offset = (screen.get_height() - maze_height) // 2",
         "detail": "GUI.graphic",
         "documentation": {}
     },
