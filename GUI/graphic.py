@@ -1,8 +1,19 @@
 import pygame
 import sys
+from INIT.structs import Obj_animation
 from mazegenerator import MazeGenerator
 
+
 pygame.init()
+
+pacman_frames = [
+    pygame.image.load("images/pac-man/pacman_open.png"),
+    pygame.image.load("images/pac-man/pacman_half_open.png"),
+    pygame.image.load("images/pac-man/pacman_closed.png")  # Changed to .png
+    # pygame.image.load("images/pac-man/pacman_half_open.png"),
+    # pygame.image.load("images/pac-man/pacman_closed.png")
+
+]
 
 screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
 pygame.display.set_caption("Pac-Man")
@@ -24,10 +35,10 @@ TILE_SIZE = 2
 
 # Make sure this path is correct for your machine
 original_image = pygame.image.load(
-    "/home/ichtioui/Documents/pac-man/pa.png").convert_alpha()
+    "/home/ichtioui/Documents/pac-man/bacman.gif").convert_alpha()
 
 # Shrink by 50%
-pacman_image = pygame.transform.scale(original_image, (37, 37))
+pacman_image = Obj_animation(pacman_frames)
 
 
 def start_game():
@@ -112,12 +123,13 @@ def start_game():
         # Draw Pac-Man (Moved outside the wall loop for performance)
         # Calculate pixel position based on grid row/col and center the image inside the cell
         px = x_offset + player_col * cell_size + \
-            (cell_size - pacman_image.get_width()) // 2
+            (cell_size - 25) // 2
         py = y_offset + player_row * cell_size + \
-            (cell_size - pacman_image.get_height()) // 2
+            (cell_size - 30) // 2
 
-        screen.blit(pacman_image, (px, py))
-
+        # screen.blit(pacman_image, (px, py))
+        pacman_image.update_animation()
+        pacman_image.draw(screen, px, py)
         pygame.display.flip()
         clock.tick(60)
 
