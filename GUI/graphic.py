@@ -14,6 +14,26 @@ pacman_frames = [
     # pygame.image.load("images/pac-man/pacman_closed.png")
 
 ]
+ori = pygame.image.load("images/ghosts/red.png")
+ne = pygame.transform.scale(ori, (25, 25))
+ori_1 = pygame.image.load("images/ghosts/cyan.png")
+ne_1 = pygame.transform.scale(ori_1, (25, 25))
+ori_2 = pygame.image.load("images/ghosts/pinky.png")
+ne_2 = pygame.transform.scale(ori_2, (25, 25))
+ori_3 = pygame.image.load("images/ghosts/orange.png")
+ne_3 = pygame.transform.scale(ori_3, (25, 25))
+red_ghost_frames = [
+    ne,
+    ne_1,
+    ne_2,
+    ne_3
+]
+
+pacgum_frames = [
+    pygame.image.load("images/gum/pill.png"),
+    pygame.image.load("images/gum/power_pill.png"),
+    pygame.image.load("images/gum/pill.png")
+]
 
 screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
 pygame.display.set_caption("Pac-Man")
@@ -39,6 +59,8 @@ original_image = pygame.image.load(
 
 # Shrink by 50%
 pacman_image = Obj_animation(pacman_frames)
+pacgum_image = Obj_animation(pacgum_frames)
+red_image = Obj_animation(red_ghost_frames)
 
 
 def start_game():
@@ -130,6 +152,11 @@ def start_game():
         # screen.blit(pacman_image, (px, py))
         pacman_image.update_animation()
         pacman_image.draw(screen, px, py)
+        red_image.update_animation()
+        red_image.draw(screen, 1430, 780)
+        pacgum_image.update_animation()
+        pacgum_image.draw(screen, 1000, 780)
+
         pygame.display.flip()
         clock.tick(60)
 
