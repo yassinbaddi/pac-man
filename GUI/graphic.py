@@ -6,14 +6,36 @@ from mazegenerator import MazeGenerator
 
 pygame.init()
 
-pacman_frames = [
-    pygame.image.load("images/pac-man/pacman_open.png"),
-    pygame.image.load("images/pac-man/pacman_half_open.png"),
-    pygame.image.load("images/pac-man/pacman_closed.png")  # Changed to .png
+pacman_right_frames = [
+    pygame.image.load("images/pac-man/right/pacman_open.png"),
+    pygame.image.load("images/pac-man/right/pacman_half_open.png"),
+    pygame.image.load("images/pac-man/right/pacman_closed.png")
     # pygame.image.load("images/pac-man/pacman_half_open.png"),
     # pygame.image.load("images/pac-man/pacman_closed.png")
 
 ]
+
+pacman_left_frames = [
+    pygame.image.load("images/pac-man/left/pacman_open.png"),
+    pygame.image.load("images/pac-man/left/pacman_half_open.png"),
+    pygame.image.load("images/pac-man/left/pacman_closed.png")
+
+]
+
+pacman_up_frames = [
+    pygame.image.load("images/pac-man/up/pacman_open.png"),
+    pygame.image.load("images/pac-man/up/pacman_half_open.png"),
+    pygame.image.load("images/pac-man/up/pacman_closed.png")
+
+]
+
+pacman_down_frames = [
+    pygame.image.load("images/pac-man/down/pacman_open.png"),
+    pygame.image.load("images/pac-man/down/pacman_half_open.png"),
+    pygame.image.load("images/pac-man/down/pacman_closed.png")
+
+]
+
 ori = pygame.image.load("images/ghosts/red.png")
 ne = pygame.transform.scale(ori, (25, 25))
 ori_1 = pygame.image.load("images/ghosts/cyan.png")
@@ -54,11 +76,16 @@ wall_width = 10
 TILE_SIZE = 2
 
 # Make sure this path is correct for your machine
-original_image = pygame.image.load(
-    "/home/ichtioui/Documents/pac-man/bacman.gif").convert_alpha()
+# original_image = pygame.image.load(
+#     "/home/ichtioui/Documents/pac-man/bacman.gif").convert_alpha()
 
-# Shrink by 50%
-pacman_image = Obj_animation(pacman_frames)
+# # Shrink by 50%
+# original_image = pygame.transform.scale(original_image, (original_image.get_width() // 2, original_image.get_height() // 2))
+
+pacman_right_image = Obj_animation(pacman_right_frames)
+pacman_left_image = Obj_animation(pacman_left_frames)
+pacman_up_image = Obj_animation(pacman_up_frames)
+pacman_down_image = Obj_animation(pacman_down_frames)
 pacgum_image = Obj_animation(pacgum_frames)
 red_image = Obj_animation(red_ghost_frames)
 
@@ -79,6 +106,8 @@ def start_game():
     # Track Pac-Man's position on the grid instead of raw pixels
     player_col = 0
     player_row = 0
+
+    animation = pacman_right_image  # Default to right-facing animation
 
     while running:
         for event in pygame.event.get():
@@ -101,21 +130,24 @@ def start_game():
                 # We check the current cell's walls before allowing movement.
 
                 if event.key == pygame.K_w:  # UP
+                    animation = pacman_up_image  # Change to up-facing animation
                     if not (maze.maze[player_row][player_col] & 1):
                         player_row -= 1
 
                 elif event.key == pygame.K_d:  # RIGHT
+                    animation = pacman_right_image  # Change to right-facing animation
                     if not (maze.maze[player_row][player_col] & 2):
                         player_col += 1
 
                 elif event.key == pygame.K_s:  # DOWN
+                    animation = pacman_down_image  # Change to down-facing animation
                     if not (maze.maze[player_row][player_col] & 4):
                         player_row += 1
 
                 elif event.key == pygame.K_a:  # LEFT
+                    animation = pacman_left_image  # Change to left-facing animation
                     if not (maze.maze[player_row][player_col] & 8):
                         player_col -= 1
-
         # Clear screen every frame
         screen.fill((0, 0, 0))
 
@@ -150,8 +182,8 @@ def start_game():
             (cell_size - 30) // 2
 
         # screen.blit(pacman_image, (px, py))
-        pacman_image.update_animation()
-        pacman_image.draw(screen, px, py)
+        animation.update_animation()
+        animation.draw(screen, px, py)
         red_image.update_animation()
         red_image.draw(screen, 1430, 780)
         pacgum_image.update_animation()
