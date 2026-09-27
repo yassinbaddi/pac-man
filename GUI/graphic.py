@@ -96,7 +96,7 @@ def start_game():
 
     running = True
     cell_size = 40
-    wall_width = 4
+    wall_width = 4  # Adjust thickness as needed
 
     maze_width = len(maze.maze[0]) * cell_size
     maze_height = len(maze.maze) * cell_size
@@ -104,19 +104,15 @@ def start_game():
     x_offset = (screen.get_width() - maze_width) // 2
     y_offset = (screen.get_height() - maze_height) // 2
 
-    # --- FLOAT POSITION & TARGET GRID POSITIONS ---
-    player_x = 0.0  # Current float grid position (e.g. 1.0, 1.1, 1.2)
-    player_y = 0.0
-    target_col = 0  # Grid cell Pac-Man is moving toward
-    target_row = 0
+    # Track Pac-Man's position on the grid instead of raw pixels
+    player_col = 0
+    player_row = 0
 
-    speed = 0.08  # Fraction of grid cell moved per frame at 60 FPS (higher = faster)
+    last_move_time = 0
+    move_delay = 150
 
-    # Animation timing
-    last_anim_time = 0
-    anim_delay = 100  # Milliseconds per animation frame
+    animation = pacman_right_image  # Default to right-facing animation
 
-    animation = pacman_right_image
     direction = {"up": False, "right": True, "down": False, "left": False}
 
     while running:
@@ -129,89 +125,114 @@ def start_game():
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
+                # Generate new maze and reset position
                 if event.key == pygame.K_1:
                     maze.generate()
-                    player_x = 0.0
-                    player_y = 0.0
-                    target_col = 0
-                    target_row = 0
+                    player_col = 0
+                    player_row = 0
 
-                # Set intended direction on keypress
-                if event.key == pygame.K_w:
-                    direction = {"up": True, "right": False, "down": False, "left": False}
-                elif event.key == pygame.K_d:
-                    direction = {"up": False, "right": True, "down": False, "left": False}
-                elif event.key == pygame.K_s:
-                    direction = {"up": False, "right": False, "down": True, "left": False}
-                elif event.key == pygame.K_a:
-                    direction = {"up": False, "right": False, "down": False, "left": True}
+                # --- WASD MOVEMENT LOGIC ---
+                # The maze generator uses bitwise flags for walls: 1=TOP, 2=RIGHT, 4=BOTTOM, 8=LEFT
+                # We check the current cell's walls before allowing movement.
 
+                if event.key == pygame.K_w:  # UP
+                    animation = pacman_up_image  # Change to up-facing animation
+                    if not (maze.maze[player_row][player_col] & 1):
+                        direction = {"up": True, "right": False,
+                                     "down": False, "left": False}
+
+                    # player_row -= 1
+
+                elif event.key == pygame.K_d:  # RIGHT
+                    animation = pacman_right_image  # Change to right-facing animation
+                    if not (maze.maze[player_row][player_col] & 2):
+                        direction = {"up": False, "right": True,
+                                     "down": False, "left": False}
+                        # player_col += 1
+
+                elif event.key == pygame.K_s:  # DOWN
+                    animation = pacman_down_image  # Change to down-facing animation
+                    if not (maze.maze[player_row][player_col] & 4):
+                        direction = {"up": False, "right": False,
+                                     "down": True, "left": False}
+                        # player_row += 1
+
+                elif event.key == pygame.K_a:  # LEFT
+                    animation = pacman_left_image  # Change to left-facing animation
+                    if not (maze.maze[player_row][player_col] & 8):
+                        direction = {"up": False, "right": False,
+                                     "down": False, "left": True}
+                        # player_col -= 1
+        # Clear screen every frame
         screen.fill((0, 0, 0))
 
-        # --- DRAW MAZE ---
+        # Draw continuous maze walls using lines
         for row, line in enumerate(maze.maze):
             for col, cell in enumerate(line):
+
                 x = x_offset + col * cell_size
                 y = y_offset + row * cell_size
 
                 if cell & 1:  # TOP
-                    pygame.draw.line(screen, (0, 0, 255), (x, y), (x + cell_size, y), wall_width)
+                    pygame.draw.line(screen, (0, 0, 255), (x, y),
+                                     (x + cell_size, y), wall_width)
+
                 if cell & 2:  # RIGHT
-                    pygame.draw.line(screen, (0, 0, 255), (x + cell_size, y), (x + cell_size, y + cell_size), wall_width)
+                    pygame.draw.line(screen, (0, 0, 255), (x + cell_size, y),
+                                     (x + cell_size, y + cell_size), wall_width)
+
                 if cell & 4:  # BOTTOM
-                    pygame.draw.line(screen, (0, 0, 255), (x, y + cell_size), (x + cell_size, y + cell_size), wall_width)
+                    pygame.draw.line(screen, (0, 0, 255), (x, y + cell_size),
+                                     (x + cell_size, y + cell_size), wall_width)
+
                 if cell & 8:  # LEFT
-                    pygame.draw.line(screen, (0, 0, 255), (x, y), (x, y + cell_size), wall_width)
+                    pygame.draw.line(screen, (0, 0, 255), (x, y),
+                                     (x, y + cell_size), wall_width)
 
-        # --- 1. SET NEXT TARGET CELL WHEN ALIGNED WITH CURRENT TARGET ---
-        if abs(player_x - target_col) < 0.01 and abs(player_y - target_row) < 0.01:
-            # Lock exact float position to target integer
-            player_x = float(target_col)
-            player_y = float(target_row)
-
-            # Check wall collisions before advancing target_col / target_row
-            if direction["right"] and not (maze.maze[target_row][target_col] & 2):
-                target_col += 1
-                animation = pacman_right_image
-            elif direction["left"] and not (maze.maze[target_row][target_col] & 8):
-                target_col -= 1
-                animation = pacman_left_image
-            elif direction["up"] and not (maze.maze[target_row][target_col] & 1):
-                target_row -= 1
-                animation = pacman_up_image
-            elif direction["down"] and not (maze.maze[target_row][target_col] & 4):
-                target_row += 1
-                animation = pacman_down_image
-
-        # --- 2. SMOOTHLY INTERPOLATE POSITION TOWARD TARGET ---
-        if player_x < target_col:
-            player_x = min(target_col, player_x + speed)
-        elif player_x > target_col:
-            player_x = max(target_col, player_x - speed)
-
-        if player_y < target_row:
-            player_y = min(target_row, player_y + speed)
-        elif player_y > target_row:
-            player_y = max(target_row, player_y - speed)
-
-        # --- 3. ANIMATION TIMING ---
+        # Draw Pac-Man (Moved outside the wall loop for performance)
+        # Calculate pixel position based on grid row/col and center the image inside the cell
         current_time = pygame.time.get_ticks()
-        if (current_time - last_anim_time) > anim_delay:
+        if (current_time - last_move_time) > move_delay:
+            moved = False
+            if direction["right"]:
+                # time.sleep(1000)
+                if not (maze.maze[player_row][player_col] & 2):
+                    player_col += 1
+                    moved = True
+            elif direction["up"]:
+                # pygame.time.wait(1000)
+                if not (maze.maze[player_row][player_col] & 1):
+                    player_row -= 1
+                    moved = True
+            elif direction["left"]:
+                # pygame.time.wait(1000)
+                if not (maze.maze[player_row][player_col] & 8):
+                    player_col -= 1
+                    moved = True
+            elif direction["down"]:
+                # time.sleep(1000)
+                if not (maze.maze[player_row][player_col] & 4):
+                    player_row += 1
+                    moved = True
+            if moved:
+                last_move_time = current_time
+
+            px = x_offset + player_col * cell_size + \
+                    (cell_size - 25) // 2
+            py = y_offset + player_row * cell_size + \
+                    (cell_size - 30) // 2
+            # screen.blit(pacman_image, (px, py))
             animation.update_animation()
+            animation.draw(screen, px, py)
             red_image.update_animation()
+            red_image.draw(screen, 1430, 780)
             pacgum_image.update_animation()
-            last_anim_time = current_time
+            pacgum_image.draw(screen, 1000, 780)
 
-        # --- 4. DRAWING AT FLOAT-DERIVED PIXEL POSITIONS ---
-        px = x_offset + player_x * cell_size + (cell_size - 25) // 2
-        py = y_offset + player_y * cell_size + (cell_size - 30) // 2
 
-        animation.draw(screen, px, py)
-        red_image.draw(screen, 1430, 780)
-        pacgum_image.draw(screen, 1000, 780)
+            pygame.display.flip()
+            clock.tick(60)
 
-        pygame.display.flip()
-        clock.tick(60)
 
 start_game()
 
