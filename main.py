@@ -11,6 +11,5 @@ def main():
     gui = Gui()
     print(obj.init_game())
 
-
 if __name__ == "__main__":
     main()
