@@ -1,12 +1,15 @@
 import sys
-from GUI.graphic import any_fun
+from gui.graphic import Gui
+from parsing.parsing import Config
 
 
 def main():
     if len(sys.argv) != 2:
         raise ValueError("any Error")
 
-    any_fun()
+    obj = Config(sys.argv[1])
+    gui = Gui()
+    print(obj.init_game())
 
 
 if __name__ == "__main__":

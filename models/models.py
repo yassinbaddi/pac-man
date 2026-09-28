@@ -73,32 +73,3 @@ class Obj_animation:
 
     def draw(self, screen, x, y):
         screen.blit(self.frames[self.current_frame], (x, y))
-
-
-def init_game(config_path: str) -> GameState:
-    try:
-        with open(config_path, 'r') as f:
-            # Add custom logic here to strip '#' comments
-            raw_data = json.load(f)
-    except Exception as e:
-        # The subject strictly forbids Python tracebacks on error
-        print(f"Error loading config: {e}")
-        sys.exit(1)
-
-    # Map raw_data to GameConfig, handling missing keys with safe defaults
-    config = GameConfig()
-    config.highscore_filename = raw_data["highscore_filename"]
-    config.lives = raw_data["lives"]
-    config.pacgum = raw_data["pacgum"]
-    config.points_per_pacgum = raw_data["points_per_pacgum"]
-    config.points_per_super_pacgum = raw_data["points_per_super_pacgum"]
-    config.points_per_ghost = raw_data["points_per_ghost"]
-    config.seed = raw_data["seed"]
-    config.level_max_time = raw_data["level_max_time"]
-    config.levels = raw_data["level"]
-    print(f"Loaded config: {config}")
-
-    return GameState(config)
-
-
-#init_game("test.json")
