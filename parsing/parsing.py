@@ -30,11 +30,8 @@ class Config():
                         data += line
             raw_data = json.loads(data)
         except Exception as e:
-            # The subject strictly forbids Python tracebacks on error
-            print(f"Error loading config: {e}")
             sys.exit(1)
 
-        # Map raw_data to GameConfig, handling missing keys with safe defaults
         config = GameConfig()
         config.highscore_filename = raw_data["highscore_filename"]
         config.lives = raw_data["lives"]
@@ -45,6 +42,5 @@ class Config():
         config.seed = raw_data["seed"]
         config.level_max_time = raw_data["level_max_time"]
         config.levels = raw_data["level"]
-        print(f"Loaded config: {config}")
 
         return GameState(config)

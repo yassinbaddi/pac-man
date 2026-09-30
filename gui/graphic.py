@@ -89,21 +89,11 @@ for ghost_folder in GHOST_FOLDERS:
     ]
     ghost_animations.append(Obj_animation(ghost_frames))
 
-pellet = pygame.transform.scale(
-    pygame.image.load("images/gum/pill_new.png"), (6, 6)
-)
 pellet_frames = [
-    pellet
+    pygame.image.load("images/gum/pill.png"),
+    pygame.image.load("images/gum/power_pill.png"),
+    pygame.image.load("images/gum/pill.png")
 ]
-
-super_pellet = pygame.transform.scale(
-    pygame.image.load("images/gum/pill_new.png"), (20, 20)
-)
-
-super_pellet_frames = [
-    super_pellet
-]
-
 
 first_x = 0
 first_y = 0
@@ -117,7 +107,6 @@ pacman_up_animation = Obj_animation(pacman_up_frames)
 pacman_down_animation = Obj_animation(pacman_down_frames)
 
 pellet_animation = Obj_animation(pellet_frames)
-super_pellet_animation = Obj_animation(super_pellet_frames)
 
 
 class Gui:
@@ -209,8 +198,6 @@ class Gui:
                                 "left": False
                             }
 
-                    if cell & 1:
-                        pygam
                     elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         if not (self.maze[player_row][player_column] & 4):
                             current_animation = pacman_down_animation
@@ -331,8 +318,8 @@ class Gui:
             for ghost_animation, (ghost_row, ghost_column) in zip(
                     ghost_animations, ghost_cells):
                 ghost_animation.update_animation()
-                ghost_x = x_offset + ghost_column * \
-                    cell_size + (cell_size - ghost_size[0]) // 2
+                ghost_x = x_offset + ghost_column * cell_size + \
+                    (cell_size - ghost_size[0]) // 2
                 ghost_y = y_offset + ghost_row * cell_size + \
                     (cell_size - ghost_size[1]) // 2
                 ghost_animation.draw(self.screen, ghost_x, ghost_y)
