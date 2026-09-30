@@ -95,6 +95,8 @@ pellet_frames = [
     pygame.image.load("images/gum/pill.png")
 ]
 
+first_x = 0
+first_y = 0
 cell_size = 50
 wall_width = 10
 tile_size = 2
@@ -217,10 +219,11 @@ class Gui:
                             }
 
             self.screen.fill((0, 0, 0))
+            max_x = len(self.maze[0]) - 1
+            max_y = len(self.maze) - 1
 
             for row_index, maze_row in enumerate(self.maze):
                 for column_index, cell in enumerate(maze_row):
-
                     cell_x = x_offset + column_index * cell_size
                     cell_y = y_offset + row_index * cell_size
 
@@ -259,6 +262,22 @@ class Gui:
                             (cell_x, cell_y + cell_size),
                             wall_width
                         )
+
+                    if not (cell & 1 and cell & 2 and cell & 4 and cell & 8):
+                        pellet_animation.draw(
+                            self.screen, cell_x + 20, cell_y + 20)
+                    if column_index == 0 and row_index == 0:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 15, cell_y + 15)
+                    if row_index == 0 and cell_y == max_y:
+                        super_pellet_animation.draw(
+                            self.screen, first_x + 15, cell_y + 8)
+                    if cell_x == max_x and column_index == 0:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 8, first_y + 15)
+                    if cell_x == max_x and cell_y == max_y:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 12, cell_y + 8)
 
             current_time = pygame.time.get_ticks()
 
@@ -305,8 +324,8 @@ class Gui:
                     (cell_size - ghost_size[1]) // 2
                 ghost_animation.draw(self.screen, ghost_x, ghost_y)
 
-            pellet_animation.update_animation()
-            pellet_animation.draw(self.screen, 1000, 780)
+            # pellet_animation.update_animation()
+            # pellet_animation.draw(self.screen, 1000, 780)
 
             pygame.display.flip()
             self.clock.tick(60)
