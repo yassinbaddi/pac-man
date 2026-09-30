@@ -9,7 +9,6 @@ def main():
 
     obj = Config(sys.argv[1])
     gui = Gui()
-    print(obj.init_game())
 
 if __name__ == "__main__":
     main()

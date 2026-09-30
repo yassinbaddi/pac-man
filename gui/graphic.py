@@ -126,7 +126,6 @@ class Gui:
         )
 
     def start_game(self):
-        print("Game started!")
 
         running = True
         cell_size = 40
@@ -313,19 +312,16 @@ class Gui:
             self.clock.tick(60)
 
     def high_scores(self):
-        print("High scores")
         self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
     def instructions(self):
-        print("Instructions")
         self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
     def any_fun(self):
-        running = True
 
-        while running:
+        while True:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
