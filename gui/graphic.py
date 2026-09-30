@@ -1,73 +1,112 @@
 import pygame
+import random
 import sys
 from models.models import Obj_animation
 from mazegenerator import MazeGenerator
 
-
-p = pygame.image.load(
-    "/home/ichtioui/Documents/pac-man/images/spritesheet (1) (5) (1).png")
-p = pygame.transform.scale(p, (30, 30))
-
-p1 = pygame.image.load(
-    "/home/ichtioui/Documents/pac-man/images/spritesheet (1) (5) (2).png")
-p1 = pygame.transform.scale(p1, (30, 30))
-
-
 pacman_right_frames = [
-    # pygame.image.load("images/pac-man/right/pacman_open.png"),
-    # pygame.image.load("images/pac-man/right/pacman_half_open.png"),
-    # pygame.image.load("images/pac-man/right/pacman_closed.png")
-    p,
-    p,
-    p1,
-    p1
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/pacman.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/right_1.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/right_2.png"),
+        (35, 35)
+    )
 ]
 
 pacman_left_frames = [
-    pygame.image.load("images/pac-man/left/pacman_open.png"),
-    pygame.image.load("images/pac-man/left/pacman_half_open.png"),
-    pygame.image.load("images/pac-man/left/pacman_closed.png")
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/pacman.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/left_1.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/left_2.png"),
+        (35, 35)
+    )
 ]
 
 pacman_up_frames = [
-    pygame.image.load("images/pac-man/up/pacman_open.png"),
-    pygame.image.load("images/pac-man/up/pacman_half_open.png"),
-    pygame.image.load("images/pac-man/up/pacman_closed.png")
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/pacman.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/up_1.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/up_2.png"),
+        (35, 35)
+    )
 ]
 
 pacman_down_frames = [
-    pygame.image.load("images/pac-man/down/pacman_open.png"),
-    pygame.image.load("images/pac-man/down/pacman_half_open.png"),
-    pygame.image.load("images/pac-man/down/pacman_closed.png")
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/pacman.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/down_1.png"),
+        (35, 35)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/pacman/down_2.png"),
+        (35, 35)
+    )
 ]
 
-ghost_size = (25, 25)
+ghost_size = (35, 35)
 
-red_ghost_image = pygame.image.load("images/ghosts/red.png")
-red_ghost_image = pygame.transform.scale(red_ghost_image, ghost_size)
-
-cyan_ghost_image = pygame.image.load("images/ghosts/cyan.png")
-cyan_ghost_image = pygame.transform.scale(cyan_ghost_image, ghost_size)
-
-pinky_ghost_image = pygame.image.load("images/ghosts/pinky.png")
-pinky_ghost_image = pygame.transform.scale(pinky_ghost_image, ghost_size)
-
-orange_ghost_image = pygame.image.load("images/ghosts/orange.png")
-orange_ghost_image = pygame.transform.scale(orange_ghost_image, ghost_size)
-
-ghost_frames = [
-    red_ghost_image,
-    cyan_ghost_image,
-    pinky_ghost_image,
-    orange_ghost_image
+GHOST_FOLDERS = [
+    "images/ghosts/light_blue_ghost",
+    "images/ghosts/pink_ghost",
+    "images/ghosts/red_ghost",
+    "images/ghosts/yellow_ghost",
 ]
 
+ghost_animations = []
+for ghost_folder in GHOST_FOLDERS:
+    ghost_frames = [
+        pygame.transform.scale(
+            pygame.image.load(f"{ghost_folder}/{frame_name}"),
+            ghost_size
+        )
+        for frame_name in [
+            "up_1.png", "up_2.png",
+            "down_1.png", "down_2.png",
+            "left_1.png", "left_2.png",
+            "right_1.png", "right_2.png"
+        ]
+    ]
+    ghost_animations.append(Obj_animation(ghost_frames))
+
+pellet = pygame.transform.scale(
+    pygame.image.load("images/gum/pill_new.png"), (6, 6)
+)
 pellet_frames = [
-    pygame.image.load("images/gum/pill.png"),
-    pygame.image.load("images/gum/power_pill.png"),
-    pygame.image.load("images/gum/pill.png")
+    pellet
 ]
 
+super_pellet = pygame.transform.scale(
+    pygame.image.load("images/gum/pill_new.png"), (20, 20)
+)
+
+super_pellet_frames = [
+    super_pellet
+]
+
+
+first_x = 0
+first_y = 0
 cell_size = 50
 wall_width = 10
 tile_size = 2
@@ -78,7 +117,7 @@ pacman_up_animation = Obj_animation(pacman_up_frames)
 pacman_down_animation = Obj_animation(pacman_down_frames)
 
 pellet_animation = Obj_animation(pellet_frames)
-ghost_animation = Obj_animation(ghost_frames)
+super_pellet_animation = Obj_animation(super_pellet_frames)
 
 
 class Gui:
@@ -100,7 +139,6 @@ class Gui:
         )
 
     def start_game(self):
-        print("Game started!")
 
         running = True
         cell_size = 40
@@ -114,6 +152,14 @@ class Gui:
 
         player_column = 0
         player_row = 0
+
+        ghost_cells = [
+            (
+                random.randrange(len(self.maze)),
+                random.randrange(len(self.maze[0]))
+            )
+            for _ in ghost_animations
+        ]
 
         last_move_time = 0
         move_delay = 150
@@ -143,7 +189,7 @@ class Gui:
                         player_column = 0
                         player_row = 0
 
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
                         if not (self.maze[player_row][player_column] & 1):
                             current_animation = pacman_up_animation
                             direction = {
@@ -153,7 +199,7 @@ class Gui:
                                 "left": False
                             }
 
-                    elif event.key == pygame.K_d:
+                    elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                         if not (self.maze[player_row][player_column] & 2):
                             current_animation = pacman_right_animation
                             direction = {
@@ -163,7 +209,9 @@ class Gui:
                                 "left": False
                             }
 
-                    elif event.key == pygame.K_s:
+                    if cell & 1:
+                        pygam
+                    elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                         if not (self.maze[player_row][player_column] & 4):
                             current_animation = pacman_down_animation
                             direction = {
@@ -173,7 +221,7 @@ class Gui:
                                 "left": False
                             }
 
-                    elif event.key == pygame.K_a:
+                    elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         if not (self.maze[player_row][player_column] & 8):
                             current_animation = pacman_left_animation
                             direction = {
@@ -184,10 +232,11 @@ class Gui:
                             }
 
             self.screen.fill((0, 0, 0))
+            max_x = len(self.maze[0]) - 1
+            max_y = len(self.maze) - 1
 
             for row_index, maze_row in enumerate(self.maze):
                 for column_index, cell in enumerate(maze_row):
-
                     cell_x = x_offset + column_index * cell_size
                     cell_y = y_offset + row_index * cell_size
 
@@ -227,6 +276,22 @@ class Gui:
                             wall_width
                         )
 
+                    if not (cell & 1 and cell & 2 and cell & 4 and cell & 8):
+                        pellet_animation.draw(
+                            self.screen, cell_x + 20, cell_y + 20)
+                    if column_index == 0 and row_index == 0:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 15, cell_y + 15)
+                    if row_index == 0 and cell_y == max_y:
+                        super_pellet_animation.draw(
+                            self.screen, first_x + 15, cell_y + 8)
+                    if cell_x == max_x and column_index == 0:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 8, first_y + 15)
+                    if cell_x == max_x and cell_y == max_y:
+                        super_pellet_animation.draw(
+                            self.screen, cell_x + 12, cell_y + 8)
+
             current_time = pygame.time.get_ticks()
 
             if current_time - last_move_time > move_delay:
@@ -263,29 +328,32 @@ class Gui:
             current_animation.update_animation()
             current_animation.draw(self.screen, pacman_x, pacman_y)
 
-            ghost_animation.update_animation()
-            ghost_animation.draw(self.screen, 1430, 780)
+            for ghost_animation, (ghost_row, ghost_column) in zip(
+                    ghost_animations, ghost_cells):
+                ghost_animation.update_animation()
+                ghost_x = x_offset + ghost_column * \
+                    cell_size + (cell_size - ghost_size[0]) // 2
+                ghost_y = y_offset + ghost_row * cell_size + \
+                    (cell_size - ghost_size[1]) // 2
+                ghost_animation.draw(self.screen, ghost_x, ghost_y)
 
-            pellet_animation.update_animation()
-            pellet_animation.draw(self.screen, 1000, 780)
+            # pellet_animation.update_animation()
+            # pellet_animation.draw(self.screen, 1000, 780)
 
             pygame.display.flip()
             self.clock.tick(60)
 
     def high_scores(self):
-        print("High scores")
         self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
     def instructions(self):
-        print("Instructions")
         self.screen.fill((0, 0, 0))
         pygame.display.flip()
 
     def any_fun(self):
-        running = True
 
-        while running:
+        while True:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
