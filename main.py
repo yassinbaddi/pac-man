@@ -9,7 +9,7 @@ def main():
     if len(sys.argv) != 2:
         raise ValueError("any Error")
     obj = Config(sys.argv[1])
-    gui = Gui()
+    Gui(obj.init_game())
     print_banner()
     print_final_art()
 

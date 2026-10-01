@@ -4,6 +4,7 @@ import sys
 from models.models import Obj_animation
 from mazegenerator import MazeGenerator
 
+
 pacman_right_frames = [
     pygame.transform.scale(
         pygame.image.load("images/pacman/pacman.png"),
@@ -104,7 +105,6 @@ pellet_frames = pygame.transform.scale(
 ),
 
 
-
 first_x = 0
 first_y = 0
 cell_size = 50
@@ -119,23 +119,27 @@ pacman_down_animation = Obj_animation(pacman_down_frames)
 pellet_animation = Obj_animation(pellet_frames)
 super_pellet_animation = Obj_animation(super_pellet_frames)
 
+
 class Gui:
-    def __init__(self):
+    def __init__(self, config):
         self.screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
-        self.maze_generator = MazeGenerator((25, 15))
+        self.maze_generator = MazeGenerator((15, 15), entry_cell=(5, 5))
         self.maze_generator.generate()
         self.maze = self.maze_generator.maze
+        self.config = config.config
+        self.init()
         self.start_game()
 
     def init(self):
         pygame.init()
         pygame.display.set_caption("Pac-Man")
-        self.menu_background = pygame.image.load("start_image.png").convert()
-        self.menu_background = pygame.transform.scale(
-            self.menu_background,
-            (1920, 1080)
-        )
+        # self.menu_background = pygame.image.load("start_image.png").convert()
+        # self.menu_background = pygame.transform.scale(
+        #     self.menu_background,
+        #     (1920, 1080)
+        # )
+        self.pacman_font = pygame.font.Font("PressStart2P-Regular.ttf", 24)
 
     def start_game(self):
 
@@ -149,8 +153,7 @@ class Gui:
         x_offset = (self.screen.get_width() - maze_width) // 2
         y_offset = (self.screen.get_height() - maze_height) // 2
 
-        player_column = 0
-        player_row = 0
+        player_column, player_row = self.maze_generator.maze_entry
 
         ghost_cells = [
             (
@@ -162,6 +165,7 @@ class Gui:
 
         last_move_time = 0
         move_delay = 150
+        visited_cells = set()
 
         current_animation = pacman_right_animation
 
@@ -185,8 +189,8 @@ class Gui:
                     if event.key == pygame.K_1:
                         self.maze_generator.generate()
                         self.maze = self.maze_generator.maze
-                        player_column = 0
-                        player_row = 0
+                        player_column = self.maze_generator.entry_cell[0]
+                        player_row = self.maze_generator.entry_cell[1]
 
                     if event.key == pygame.K_w or event.key == pygame.K_UP:
                         if not (self.maze[player_row][player_column] & 1):
@@ -231,11 +235,17 @@ class Gui:
             self.screen.fill((0, 0, 0))
             max_row = len(self.maze[0]) - 1
             max_column = len(self.maze) - 1
+            i = 0
 
             for row_index, maze_row in enumerate(self.maze):
                 for column_index, cell in enumerate(maze_row):
                     cell_x = x_offset + column_index * cell_size
                     cell_y = y_offset + row_index * cell_size
+
+                    if i == 0:
+                        first_x = cell_x
+                        first_y = cell_y
+                        i = 1
 
                     _x = x_offset + max_row * cell_size
                     _y = y_offset + max_column * cell_size
@@ -277,10 +287,14 @@ class Gui:
                         )
 
                     if not (cell & 1 and cell & 2 and cell & 4 and cell & 8):
-                        pellet_animation.draw(
-                            self.screen, cell_x + 17, cell_y + 16)
+                        if not (player_column == column_index and player_row == row_index):
+                            visited_cells.add((player_column, player_row))
+                            if not (column_index, row_index) in visited_cells:
+                                pellet_animation.update_animation()
+                                pellet_animation.draw(
+                                    self.screen, cell_x + 17, cell_y + 16
+                                )
                     super_pellet_animation.update_animation(4000)
-
 
                     if column_index == 0 and row_index == 0:
                         super_pellet_animation.draw(
@@ -297,10 +311,26 @@ class Gui:
                     #         self.screen, cell_x + 11, cell_y + 11
                     #     )
 
-                    if column_index == _y and row_index == _x:
-                        super_pellet_animation.draw(
-                            self.screen, cell_x + 11, cell_y + 11
-                        )
+                    # if column_index == _y and row_index == _x:
+                    #     super_pellet_animation.draw(
+                    #         self.screen, cell_x + 11, cell_y + 11
+                    #     )
+            text_surface = self.pacman_font.render(f"HIGH SCORE: {(len(visited_cells) - 3 ) * self.config.points_per_pacgum}", False, (255, 255, 255))
+            self.screen.blit(text_surface, (10, 10))
+
+            super_pellet_animation.draw(
+                self.screen, first_x + 11, cell_y + 11
+            )
+
+            super_pellet_animation.draw(
+                self.screen, cell_x + 11, first_y + 11
+            )
+            super_pellet_animation.draw(
+                self.screen, cell_x + 11, cell_y + 11
+            )
+            visited_cells.add((first_x, cell_y))
+            visited_cells.add((cell_x, first_y))
+            visited_cells.add((cell_x, cell_y))
 
             current_time = pygame.time.get_ticks()
 
@@ -349,6 +379,7 @@ class Gui:
 
             # pellet_animation.update_animation()
             # pellet_animation.draw(self.screen, 1000, 780)
+            print((len(visited_cells) - 3) * self.config.points_per_pacgum)
 
             pygame.display.flip()
             self.clock.tick(60)
