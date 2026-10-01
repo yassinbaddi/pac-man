@@ -65,8 +65,9 @@ class Obj_animation:
         self.animation_timer = 0
         self.animation_speed = 10  # This will now trigger every 10 frames
 
-    def update_animation(self):
+    def update_animation(self, animation_speed = 10):
         self.animation_timer += 1
+        self.animation_speed = animation_speed
         if self.animation_timer >= self.animation_speed:
             self.animation_timer = 0
             self.current_frame = (self.current_frame + 1) % len(self.frames)

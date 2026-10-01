@@ -64,6 +64,15 @@ pacman_down_frames = [
     )
 ]
 
+super_pellet_frames = [
+    pygame.transform.scale(
+        pygame.image.load("images/gum/pill_new.png"), (24, 24)
+    ),
+    pygame.transform.scale(
+        pygame.image.load("images/gum/2013.png"), (24, 24)
+    ),
+]
+
 ghost_size = (35, 35)
 
 GHOST_FOLDERS = [
@@ -89,11 +98,12 @@ for ghost_folder in GHOST_FOLDERS:
     ]
     ghost_animations.append(Obj_animation(ghost_frames))
 
-pellet_frames = [
-    pygame.image.load("images/gum/pill.png"),
-    pygame.image.load("images/gum/power_pill.png"),
-    pygame.image.load("images/gum/pill.png")
-]
+pellet_frames = pygame.transform.scale(
+    pygame.image.load("images/gum/pill_new.png"),
+    (10, 10)
+),
+
+
 
 first_x = 0
 first_y = 0
@@ -107,7 +117,7 @@ pacman_up_animation = Obj_animation(pacman_up_frames)
 pacman_down_animation = Obj_animation(pacman_down_frames)
 
 pellet_animation = Obj_animation(pellet_frames)
-
+super_pellet_animation = Obj_animation(super_pellet_frames)
 
 class Gui:
     def __init__(self):
@@ -219,13 +229,16 @@ class Gui:
                             }
 
             self.screen.fill((0, 0, 0))
-            max_x = len(self.maze[0]) - 1
-            max_y = len(self.maze) - 1
+            max_row = len(self.maze[0]) - 1
+            max_column = len(self.maze) - 1
 
             for row_index, maze_row in enumerate(self.maze):
                 for column_index, cell in enumerate(maze_row):
                     cell_x = x_offset + column_index * cell_size
                     cell_y = y_offset + row_index * cell_size
+
+                    _x = x_offset + max_row * cell_size
+                    _y = y_offset + max_column * cell_size
 
                     if cell & 1:
                         pygame.draw.line(
@@ -265,19 +278,29 @@ class Gui:
 
                     if not (cell & 1 and cell & 2 and cell & 4 and cell & 8):
                         pellet_animation.draw(
-                            self.screen, cell_x + 20, cell_y + 20)
+                            self.screen, cell_x + 17, cell_y + 16)
+                    super_pellet_animation.update_animation(4000)
+
+
                     if column_index == 0 and row_index == 0:
                         super_pellet_animation.draw(
-                            self.screen, cell_x + 15, cell_y + 15)
-                    if row_index == 0 and cell_y == max_y:
+                            self.screen, cell_x + 11, cell_y + 11
+                        )
+
+                    # if column_index == 0 and row_index == 0:
+                    #     super_pellet_animation.draw(
+                    #         self.screen, _x + 7, _y + 7
+                    #     )
+
+                    # if column_index == 0 and row_index == 0:
+                    #     super_pellet_animation.draw(
+                    #         self.screen, cell_x + 11, cell_y + 11
+                    #     )
+
+                    if column_index == _y and row_index == _x:
                         super_pellet_animation.draw(
-                            self.screen, first_x + 15, cell_y + 8)
-                    if cell_x == max_x and column_index == 0:
-                        super_pellet_animation.draw(
-                            self.screen, cell_x + 8, first_y + 15)
-                    if cell_x == max_x and cell_y == max_y:
-                        super_pellet_animation.draw(
-                            self.screen, cell_x + 12, cell_y + 8)
+                            self.screen, cell_x + 11, cell_y + 11
+                        )
 
             current_time = pygame.time.get_ticks()
 
