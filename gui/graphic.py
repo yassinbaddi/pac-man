@@ -104,12 +104,68 @@ pellet_frames = pygame.transform.scale(
     (10, 10)
 ),
 
+def get_neighbors(x, y, maze):
+                neighbors = set()
+
+                # Up
+                if not (maze[y][x] & 1):
+                    neighbors.add((x, y - 1))
+
+                # Right
+                if not (maze[y][x] & 2):
+                    neighbors.add((x + 1, y))
+
+                # Down
+                if not (maze[y][x] & 4):
+                    neighbors.add((x, y + 1))
+
+                # Left
+                if not (maze[y][x] & 8):
+                    neighbors.add((x - 1, y))
+
+                return neighbors
+
+
+def bfs(end, x, y, maze):
+                from collections import deque
+
+                start = (x, y)
+                dp = deque([start])
+
+                visited = {start}
+                came_from = {start: None}
+
+                while dp:
+                    cur = dp.popleft()
+
+                    if cur == end:
+                        break
+
+                    for neighbor in get_neighbors(*cur, maze):
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            dp.append(neighbor)
+                            came_from[neighbor] = cur
+
+                if end not in came_from:
+                    return []
+
+                path = []
+                cur = end
+
+                while cur is not None:
+                    path.append(cur)
+                    cur = came_from[cur]
+
+                path.reverse()
+                return path
 
 first_x = 0
 first_y = 0
 cell_size = 50
 wall_width = 10
 tile_size = 2
+all_past = set()
 
 pacman_right_animation = Obj_animation(pacman_right_frames)
 pacman_left_animation = Obj_animation(pacman_left_frames)
@@ -124,10 +180,14 @@ class Gui:
     def __init__(self, config):
         self.screen = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
-        self.maze_generator = MazeGenerator((15, 15), entry_cell=(5, 5))
+        self.maze_generator = MazeGenerator((25, 20), entry_cell=(5, 5), seed=12)
         self.maze_generator.generate()
         self.maze = self.maze_generator.maze
         self.config = config.config
+        self.pacman_pos_x = 0
+        self.pacman_pos_y = 0
+        self.ghost_x = 0
+        self.ghost_y = 0
         self.init()
         self.start_game()
 
@@ -142,7 +202,6 @@ class Gui:
         self.pacman_font = pygame.font.Font("PressStart2P-Regular.ttf", 24)
 
     def start_game(self):
-
         running = True
         cell_size = 40
         wall_width = 4
@@ -154,14 +213,6 @@ class Gui:
         y_offset = (self.screen.get_height() - maze_height) // 2
 
         player_column, player_row = self.maze_generator.maze_entry
-
-        ghost_cells = [
-            (
-                random.randrange(len(self.maze)),
-                random.randrange(len(self.maze[0]))
-            )
-            for _ in ghost_animations
-        ]
 
         last_move_time = 0
         move_delay = 150
@@ -176,7 +227,14 @@ class Gui:
             "left": False
         }
 
+
+
+        ghost_path_index = 0
+        ghost_last_move_time = 0
+        ghost_move_delay = 300
+
         while running:
+            ghost_path = bfs((self.pacman_pos_x, self.pacman_pos_y), self.ghost_x, self.ghost_y, self.maze)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -359,7 +417,7 @@ class Gui:
 
                 if has_moved:
                     last_move_time = current_time
-
+            self.pacman_pos_x, self.pacman_pos_y = player_column, player_row
             pacman_x = x_offset + player_column * \
                 cell_size + (cell_size - 25) // 2
             pacman_y = y_offset + player_row * \
@@ -368,18 +426,51 @@ class Gui:
             current_animation.update_animation()
             current_animation.draw(self.screen, pacman_x, pacman_y)
 
-            for ghost_animation, (ghost_row, ghost_column) in zip(
-                    ghost_animations, ghost_cells):
+
+
+            # ij = 0
+            # past = (-1, -1)
+            # if ij == 0:
+            #     path = bfs((4, 4), 0, 0)
+            #     ij += 1
+            # for x, y in path:
+            #     if (x, y) != past:
+            #         all_past.add(past)
+            #     if (x, y) not in all_past:
+            #         for ghost_animation in ghost_animations:
+            #             ghost_animation.update_animation()
+            #             ghost_x = x_offset + x * cell_size + \
+            #                 (cell_size - ghost_size[0]) // 2
+            #             ghost_y = y_offset + y * cell_size + \
+            #                 (cell_size - ghost_size[1]) // 2
+            #             ghost_animation.draw(self.screen, ghost_x, ghost_y)
+            #             pygame.display.flip()
+            #         past = (x, y)current_time = pygame.time.get_ticks()
+
+            if (ghost_path and current_time - ghost_last_move_time >= ghost_move_delay):
+                if ghost_path_index < len(ghost_path) - 1:
+                    ghost_path_index += 1
+                ghost_last_move_time = current_time
+            ghost_x_cell, ghost_y_cell = ghost_path[ghost_path_index]
+            self.ghost_x = ghost_x_cell
+            self.ghost_y = ghost_y_cell
+            ghost_x = ( x_offset + ghost_x_cell * cell_size + (cell_size - ghost_size[0]) // 2)
+            ghost_y = ( y_offset + ghost_y_cell * cell_size + (cell_size - ghost_size[1]) // 2)
+
+
+            for ghost_animation in ghost_animations:
                 ghost_animation.update_animation()
-                ghost_x = x_offset + ghost_column * cell_size + \
-                    (cell_size - ghost_size[0]) // 2
-                ghost_y = y_offset + ghost_row * cell_size + \
-                    (cell_size - ghost_size[1]) // 2
-                ghost_animation.draw(self.screen, ghost_x, ghost_y)
+                ghost_animation.draw(
+                    self.screen,
+                    ghost_x,
+                    ghost_y
+                )
+
+
 
             # pellet_animation.update_animation()
             # pellet_animation.draw(self.screen, 1000, 780)
-            print((len(visited_cells) - 3) * self.config.points_per_pacgum)
+            # print((len(visited_cells) - 3) * self.config.points_per_pacgum)
 
             pygame.display.flip()
             self.clock.tick(60)
