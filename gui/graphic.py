@@ -1,11 +1,19 @@
 
 import pygame
 import random
+from enum import Enum
 import sys
 from collections import deque
-
+from models.models import GameConfig, Position, Player, Ghost, GameState
 from models.models import Obj_animation
 from mazegenerator import MazeGenerator
+
+
+class colors(Enum):
+    red = "red",
+    orange = "orange",
+    pink = "pink",
+    light_blue = "light_blue"
 
 
 pacman_right_frames = [
@@ -80,6 +88,7 @@ GHOST_FOLDERS = [
 
 ghost_animations = []
 
+
 for ghost_folder in GHOST_FOLDERS:
     ghost_frames = [
         pygame.transform.scale(
@@ -87,12 +96,12 @@ for ghost_folder in GHOST_FOLDERS:
             ghost_size
         )
         for frame_name in [
-            "up_1.png",
-            "up_2.png",
-            "down_1.png",
-            "down_2.png",
-            "left_1.png",
-            "left_2.png",
+            # "up_1.png",
+            # "up_2.png",
+            # "down_1.png",
+            # "down_2.png",
+            # "left_1.png",
+            # "left_2.png",
             "right_1.png",
             "right_2.png"
         ]
@@ -133,21 +142,17 @@ def get_neighbors(x, y, maze):
 
     neighbors = set()
 
-
     if not (maze[y][x] & 1):
         if y > 0:
             neighbors.add((x, y - 1))
-
 
     if not (maze[y][x] & 2):
         if x < len(maze[0]) - 1:
             neighbors.add((x + 1, y))
 
-
     if not (maze[y][x] & 4):
         if y < len(maze) - 1:
             neighbors.add((x, y + 1))
-
 
     if not (maze[y][x] & 8):
         if x > 0:
@@ -186,12 +191,14 @@ def bfs(end, x, y, maze):
     path.reverse()
     return path
 
+
 first_x = 0
 first_y = 0
 cell_size = 50
 wall_width = 10
 tile_size = 2
 all_past = set()
+
 
 class Gui:
 
@@ -211,8 +218,17 @@ class Gui:
         self.config = config.config
         self.pacman_pos_x = 0
         self.pacman_pos_y = 0
-        self.ghost_x = 0
-        self.ghost_y = 0
+        self.list_ghost = []
+        max_row = len(self.maze[0]) - 1
+        max_column = len(self.maze) - 1
+        self.list_ghost.append(
+            Ghost(Position(0, 0), Position(0, 0), ghost_animations[0], colors.red))
+        self.list_ghost.append(
+            Ghost(Position(0, max_column), Position(0, max_column), ghost_animations[1], colors.light_blue))
+        self.list_ghost.append(
+            Ghost(Position(max_row, 0), Position(max_row, 0), ghost_animations[2], colors.orange))
+        self.list_ghost.append(
+            Ghost(Position(max_row, max_column), Position(max_row, max_column), ghost_animations[3], colors.pink))
         self.init()
         self.start_game()
 
@@ -251,7 +267,7 @@ class Gui:
         }
         self.ghost_x = 0
         self.ghost_y = 0
-        ghost_last_move_time = 0
+        ghost_last_move_times = [0] * len(self.list_ghost)
         ghost_move_delay = 300
         while running:
             for event in pygame.event.get():
@@ -349,8 +365,7 @@ class Gui:
                                 "left": True
                             }
             self.screen.fill((0, 0, 0))
-            max_row = len(self.maze[0]) - 1
-            max_column = len(self.maze) - 1
+
             i = 0
             for row_index, maze_row in enumerate(self.maze):
                 for column_index, cell in enumerate(maze_row):
@@ -554,41 +569,63 @@ class Gui:
                 pacman_x,
                 pacman_y
             )
-            ghost_path = bfs(
-                (self.pacman_pos_x, self.pacman_pos_y),
-                self.ghost_x,
-                self.ghost_y,
-                self.maze
-            )
-            if ghost_path and len(ghost_path) > 1:
-                if (
-                    current_time
-                    - ghost_last_move_time
-                    >= ghost_move_delay
-                ):
-                    next_x, next_y = ghost_path[1]
-                    self.ghost_x = next_x
-                    self.ghost_y = next_y
-                    ghost_last_move_time = current_time
-            ghost_screen_x = (
-                x_offset
-                + self.ghost_x * cell_size
-                + (cell_size - ghost_size[0]) // 2
-            )
-            ghost_screen_y = (
-                y_offset
-                + self.ghost_y * cell_size
-                + (cell_size - ghost_size[1]) // 2
-            )
-            for ghost_animation in ghost_animations:
 
-                ghost_animation.update_animation()
-
-                ghost_animation.draw(
+            for i, ghost in enumerate(self.list_ghost):
+                if ghost.color == colors.red:
+                    ghost_path = bfs(
+                        (self.pacman_pos_x, self.pacman_pos_y),
+                        ghost.current_pos.x,
+                        ghost.current_pos.y,
+                        self.maze
+                    )
+                elif ghost.color == colors.light_blue:
+                    ghost_path = bfs(
+                        (self.pacman_pos_x + 4, self.pacman_pos_y),
+                        ghost.current_pos.x,
+                        ghost.current_pos.y,
+                        self.maze
+                    )
+                elif ghost.color == colors.orange:
+                    ghost_path = bfs(
+                        (self.pacman_pos_x, self.pacman_pos_y),
+                        ghost.current_pos.x,
+                        ghost.current_pos.y,
+                        self.maze
+                    )
+                elif ghost.color == colors.pink:
+                    ghost_path = bfs(
+                        (self.pacman_pos_x, self.pacman_pos_y),
+                        ghost.current_pos.x,
+                        ghost.current_pos.y,
+                        self.maze
+                    )
+                if ghost_path and len(ghost_path) > 1:
+                    if (
+                            current_time
+                            - ghost_last_move_times[i]
+                            >= ghost_move_delay
+                    ):
+                        next_x, next_y = ghost_path[1]
+                        ghost.current_pos.x = next_x
+                        ghost.current_pos.y = next_y
+                        ghost_last_move_times[i] = current_time
+                ghost_screen_x = (
+                    x_offset
+                    + ghost.current_pos.x * cell_size
+                    + (cell_size - ghost_size[0]) // 2
+                )
+                ghost_screen_y = (
+                    y_offset
+                    + ghost.current_pos.y * cell_size
+                    + (cell_size - ghost_size[1]) // 2
+                )
+                ghost_animations[i].update_animation()
+                ghost_animations[i].draw(
                     self.screen,
                     ghost_screen_x,
                     ghost_screen_y
                 )
+
             pygame.display.flip()
             self.clock.tick(60)
 

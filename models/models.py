@@ -23,6 +23,24 @@ class Position:
     y: int
 
 
+class Obj_animation:
+    def __init__(self, pacman_frames):
+        self.frames = pacman_frames
+        self.current_frame = 0
+        self.animation_timer = 0
+        self.animation_speed = 10  # This will now trigger every 10 frames
+
+    def update_animation(self, animation_speed=10):
+        self.animation_timer += 1
+        self.animation_speed = animation_speed
+        if self.animation_timer >= self.animation_speed:
+            self.animation_timer = 0
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+
+    def draw(self, screen, x, y):
+        screen.blit(self.frames[self.current_frame], (x, y))
+
+
 class Player:
     def __init__(self, start_pos: Position, config: GameConfig) -> None:
         self.pos: Position = start_pos
@@ -33,12 +51,13 @@ class Player:
 
 
 class Ghost:
-    def __init__(self, start_pos: Position, ghost_type: str) -> None:
-        self.spawn_pos: Position = start_pos
-        self.pos: Position = start_pos
-        self.type: str = ghost_type  # Blinky, Pinky, etc.
+    def __init__(self, start_pos: Position, curr_pos: Position, ghost_animation: Obj_animation, ghost_type: str) -> None:
+        self.start_pos: Position = start_pos
+        self.current_pos: Position = curr_pos
+        self.color: str = ghost_type  # Blinky, Pinky, etc.ghost_animations
+        self.animation: Obj_animation = ghost_animation
         self.is_edible: bool = False
-        self.direction: str = "STOP"
+        # self.direction: str = "STOP"
 
 
 class GameState:
@@ -56,21 +75,3 @@ class GameState:
         # Entities
         self.player: Player | None = None
         self.ghosts: list[Ghost] = []
-
-
-class Obj_animation:
-    def __init__(self, pacman_frames):
-        self.frames = pacman_frames
-        self.current_frame = 0
-        self.animation_timer = 0
-        self.animation_speed = 10  # This will now trigger every 10 frames
-
-    def update_animation(self, animation_speed = 10):
-        self.animation_timer += 1
-        self.animation_speed = animation_speed
-        if self.animation_timer >= self.animation_speed:
-            self.animation_timer = 0
-            self.current_frame = (self.current_frame + 1) % len(self.frames)
-
-    def draw(self, screen, x, y):
-        screen.blit(self.frames[self.current_frame], (x, y))
